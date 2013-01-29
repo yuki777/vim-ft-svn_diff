@@ -6,6 +6,9 @@
 " URL:      https://github.com/thinca/vim-ft-svn_diff
 "
 " ChangeLog: {{{
+" 0.3.3   2013-01-29
+"         - Add g:svn_path.
+"
 " 0.3.2   2012-12-10
 "         - Fix for reload.
 "
@@ -52,6 +55,9 @@ else
   let  b:undo_ftplugin = s:undo_ftplgin
 endif
 
+if !exists('g:svn_path')
+  let g:svn_path = 'svn'
+endif
 
 function! s:get_file_list()
   let pat =  '^.\{5}\s*\zs.*'
@@ -81,7 +87,7 @@ function! s:show_diff()
   call filter(list, '!isdirectory(v:val)')
   let q = '"'
   call map(list, 'q . escape(v:val, "!%#") . q')
-  execute '$read !svn diff' join(list, ' ')
+  execute '$read ! ' . g:svn_path . ' diff' join(list, ' ')
   let $LANG = lang
   % substitute/\r$//e
 
